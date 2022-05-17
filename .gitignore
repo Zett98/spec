@@ -8,6 +8,7 @@
 *.zip
 *.mlpack
 _build
+_opam
 wasm
 wasm.debug
 
