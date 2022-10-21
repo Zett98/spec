@@ -3,3 +3,5 @@
 **/*.pyc
 **/_build
 **/_output
+_opam/
+_build/
