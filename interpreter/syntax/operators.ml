@@ -4,7 +4,6 @@ open Values
 open V128
 open Ast
 
-
 let i32_const n = Const (I32 n.it @@ n.at)
 let i64_const n = Const (I64 n.it @@ n.at)
 let f32_const n = Const (F32 n.it @@ n.at)
@@ -12,7 +11,6 @@ let f64_const n = Const (F64 n.it @@ n.at)
 let v128_const n = VecConst (V128 n.it @@ n.at)
 let ref_null t = RefNull t
 let ref_func x = RefFunc x
-
 let unreachable = Unreachable
 let nop = Nop
 let drop = Drop
@@ -23,17 +21,14 @@ let if_ bt es1 es2 = If (bt, es1, es2)
 let br x = Br x
 let br_if x = BrIf x
 let br_table xs x = BrTable (xs, x)
-
 let return = Return
 let call x = Call x
 let call_indirect x y = CallIndirect (x, y)
-
 let local_get x = LocalGet x
 let local_set x = LocalSet x
 let local_tee x = LocalTee x
 let global_get x = GlobalGet x
 let global_set x = GlobalSet x
-
 let table_get x = TableGet x
 let table_set x = TableSet x
 let table_size x = TableSize x
@@ -42,46 +37,60 @@ let table_fill x = TableFill x
 let table_copy x y = TableCopy (x, y)
 let table_init x y = TableInit (x, y)
 let elem_drop x = ElemDrop x
+let i32_load align offset = Load { ty = I32Type; align; offset; pack = None }
+let i64_load align offset = Load { ty = I64Type; align; offset; pack = None }
+let f32_load align offset = Load { ty = F32Type; align; offset; pack = None }
+let f64_load align offset = Load { ty = F64Type; align; offset; pack = None }
 
-let i32_load align offset = Load {ty = I32Type; align; offset; pack = None}
-let i64_load align offset = Load {ty = I64Type; align; offset; pack = None}
-let f32_load align offset = Load {ty = F32Type; align; offset; pack = None}
-let f64_load align offset = Load {ty = F64Type; align; offset; pack = None}
 let i32_load8_s align offset =
-  Load {ty = I32Type; align; offset; pack = Some (Pack8, SX)}
-let i32_load8_u align offset =
-  Load {ty = I32Type; align; offset; pack = Some (Pack8, ZX)}
-let i32_load16_s align offset =
-  Load {ty = I32Type; align; offset; pack = Some (Pack16, SX)}
-let i32_load16_u align offset =
-  Load {ty = I32Type; align; offset; pack = Some (Pack16, ZX)}
-let i64_load8_s align offset =
-  Load {ty = I64Type; align; offset; pack = Some (Pack8, SX)}
-let i64_load8_u align offset =
-  Load {ty = I64Type; align; offset; pack = Some (Pack8, ZX)}
-let i64_load16_s align offset =
-  Load {ty = I64Type; align; offset; pack = Some (Pack16, SX)}
-let i64_load16_u align offset =
-  Load {ty = I64Type; align; offset; pack = Some (Pack16, ZX)}
-let i64_load32_s align offset =
-  Load {ty = I64Type; align; offset; pack = Some (Pack32, SX)}
-let i64_load32_u align offset =
-  Load {ty = I64Type; align; offset; pack = Some (Pack32, ZX)}
+  Load { ty = I32Type; align; offset; pack = Some (Pack8, SX) }
 
-let i32_store align offset = Store {ty = I32Type; align; offset; pack = None}
-let i64_store align offset = Store {ty = I64Type; align; offset; pack = None}
-let f32_store align offset = Store {ty = F32Type; align; offset; pack = None}
-let f64_store align offset = Store {ty = F64Type; align; offset; pack = None}
+let i32_load8_u align offset =
+  Load { ty = I32Type; align; offset; pack = Some (Pack8, ZX) }
+
+let i32_load16_s align offset =
+  Load { ty = I32Type; align; offset; pack = Some (Pack16, SX) }
+
+let i32_load16_u align offset =
+  Load { ty = I32Type; align; offset; pack = Some (Pack16, ZX) }
+
+let i64_load8_s align offset =
+  Load { ty = I64Type; align; offset; pack = Some (Pack8, SX) }
+
+let i64_load8_u align offset =
+  Load { ty = I64Type; align; offset; pack = Some (Pack8, ZX) }
+
+let i64_load16_s align offset =
+  Load { ty = I64Type; align; offset; pack = Some (Pack16, SX) }
+
+let i64_load16_u align offset =
+  Load { ty = I64Type; align; offset; pack = Some (Pack16, ZX) }
+
+let i64_load32_s align offset =
+  Load { ty = I64Type; align; offset; pack = Some (Pack32, SX) }
+
+let i64_load32_u align offset =
+  Load { ty = I64Type; align; offset; pack = Some (Pack32, ZX) }
+
+let i32_store align offset = Store { ty = I32Type; align; offset; pack = None }
+let i64_store align offset = Store { ty = I64Type; align; offset; pack = None }
+let f32_store align offset = Store { ty = F32Type; align; offset; pack = None }
+let f64_store align offset = Store { ty = F64Type; align; offset; pack = None }
+
 let i32_store8 align offset =
-  Store {ty = I32Type; align; offset; pack = Some Pack8}
+  Store { ty = I32Type; align; offset; pack = Some Pack8 }
+
 let i32_store16 align offset =
-  Store {ty = I32Type; align; offset; pack = Some Pack16}
+  Store { ty = I32Type; align; offset; pack = Some Pack16 }
+
 let i64_store8 align offset =
-  Store {ty = I64Type; align; offset; pack = Some Pack8}
+  Store { ty = I64Type; align; offset; pack = Some Pack8 }
+
 let i64_store16 align offset =
-  Store {ty = I64Type; align; offset; pack = Some Pack16}
+  Store { ty = I64Type; align; offset; pack = Some Pack16 }
+
 let i64_store32 align offset =
-  Store {ty = I64Type; align; offset; pack = Some Pack32}
+  Store { ty = I64Type; align; offset; pack = Some Pack32 }
 
 let memory_size = MemorySize
 let memory_grow = MemoryGrow
@@ -89,9 +98,7 @@ let memory_fill = MemoryFill
 let memory_copy = MemoryCopy
 let memory_init x = MemoryInit x
 let data_drop x = DataDrop x
-
 let ref_is_null = RefIsNull
-
 let i32_clz = Unary (I32 I32Op.Clz)
 let i32_ctz = Unary (I32 I32Op.Ctz)
 let i32_popcnt = Unary (I32 I32Op.Popcnt)
@@ -112,7 +119,6 @@ let f64_ceil = Unary (F64 F64Op.Ceil)
 let f64_floor = Unary (F64 F64Op.Floor)
 let f64_trunc = Unary (F64 F64Op.Trunc)
 let f64_nearest = Unary (F64 F64Op.Nearest)
-
 let i32_add = Binary (I32 I32Op.Add)
 let i32_sub = Binary (I32 I32Op.Sub)
 let i32_mul = Binary (I32 I32Op.Mul)
@@ -157,10 +163,8 @@ let f64_div = Binary (F64 F64Op.Div)
 let f64_min = Binary (F64 F64Op.Min)
 let f64_max = Binary (F64 F64Op.Max)
 let f64_copysign = Binary (F64 F64Op.CopySign)
-
 let i32_eqz = Test (I32 I32Op.Eqz)
 let i64_eqz = Test (I64 I64Op.Eqz)
-
 let i32_eq = Compare (I32 I32Op.Eq)
 let i32_ne = Compare (I32 I32Op.Ne)
 let i32_lt_s = Compare (I32 I32Op.LtS)
@@ -193,13 +197,11 @@ let f64_lt = Compare (F64 F64Op.Lt)
 let f64_le = Compare (F64 F64Op.Le)
 let f64_gt = Compare (F64 F64Op.Gt)
 let f64_ge = Compare (F64 F64Op.Ge)
-
 let i32_extend8_s = Unary (I32 (I32Op.ExtendS Pack8))
 let i32_extend16_s = Unary (I32 (I32Op.ExtendS Pack16))
 let i64_extend8_s = Unary (I64 (I64Op.ExtendS Pack8))
 let i64_extend16_s = Unary (I64 (I64Op.ExtendS Pack16))
 let i64_extend32_s = Unary (I64 (I64Op.ExtendS Pack32))
-
 let i32_wrap_i64 = Convert (I32 I32Op.WrapI64)
 let i32_trunc_f32_s = Convert (I32 I32Op.TruncSF32)
 let i32_trunc_f32_u = Convert (I32 I32Op.TruncUF32)
@@ -234,51 +236,107 @@ let i64_reinterpret_f64 = Convert (I64 I64Op.ReinterpretFloat)
 let f32_reinterpret_i32 = Convert (F32 F32Op.ReinterpretInt)
 let f64_reinterpret_i64 = Convert (F64 F64Op.ReinterpretInt)
 
-let v128_load align offset = VecLoad {ty = V128Type; align; offset; pack = None}
-let v128_load8x8_s align offset =
-  VecLoad {ty = V128Type; align; offset; pack = Some (Pack64, ExtLane (Pack8x8, SX))}
-let v128_load8x8_u align offset =
-  VecLoad {ty = V128Type; align; offset; pack = Some (Pack64, ExtLane (Pack8x8, ZX))}
-let v128_load16x4_s align offset =
-  VecLoad {ty = V128Type; align; offset; pack = Some (Pack64, ExtLane (Pack16x4, SX))}
-let v128_load16x4_u align offset =
-  VecLoad {ty = V128Type; align; offset; pack = Some (Pack64, ExtLane (Pack16x4, ZX))}
-let v128_load32x2_s align offset =
-  VecLoad {ty = V128Type; align; offset; pack = Some (Pack64, ExtLane (Pack32x2, SX))}
-let v128_load32x2_u align offset =
-  VecLoad {ty = V128Type; align; offset; pack = Some (Pack64, ExtLane (Pack32x2, ZX))}
-let v128_load8_splat align offset =
-  VecLoad {ty = V128Type; align; offset; pack = Some (Pack8, ExtSplat)}
-let v128_load16_splat align offset =
-  VecLoad {ty = V128Type; align; offset; pack = Some (Pack16, ExtSplat)}
-let v128_load32_splat align offset =
-  VecLoad {ty = V128Type; align; offset; pack = Some (Pack32, ExtSplat)}
-let v128_load64_splat align offset =
-  VecLoad {ty = V128Type; align; offset; pack = Some (Pack64, ExtSplat)}
-let v128_load32_zero align offset =
-  VecLoad {ty = V128Type; align; offset; pack = Some (Pack32, ExtZero)}
-let v128_load64_zero align offset =
-  VecLoad {ty = V128Type; align; offset; pack = Some (Pack64, ExtZero)}
+let v128_load align offset =
+  VecLoad { ty = V128Type; align; offset; pack = None }
 
-let v128_store align offset = VecStore {ty = V128Type; align; offset; pack = ()}
+let v128_load8x8_s align offset =
+  VecLoad
+    {
+      ty = V128Type;
+      align;
+      offset;
+      pack = Some (Pack64, ExtLane (Pack8x8, SX));
+    }
+
+let v128_load8x8_u align offset =
+  VecLoad
+    {
+      ty = V128Type;
+      align;
+      offset;
+      pack = Some (Pack64, ExtLane (Pack8x8, ZX));
+    }
+
+let v128_load16x4_s align offset =
+  VecLoad
+    {
+      ty = V128Type;
+      align;
+      offset;
+      pack = Some (Pack64, ExtLane (Pack16x4, SX));
+    }
+
+let v128_load16x4_u align offset =
+  VecLoad
+    {
+      ty = V128Type;
+      align;
+      offset;
+      pack = Some (Pack64, ExtLane (Pack16x4, ZX));
+    }
+
+let v128_load32x2_s align offset =
+  VecLoad
+    {
+      ty = V128Type;
+      align;
+      offset;
+      pack = Some (Pack64, ExtLane (Pack32x2, SX));
+    }
+
+let v128_load32x2_u align offset =
+  VecLoad
+    {
+      ty = V128Type;
+      align;
+      offset;
+      pack = Some (Pack64, ExtLane (Pack32x2, ZX));
+    }
+
+let v128_load8_splat align offset =
+  VecLoad { ty = V128Type; align; offset; pack = Some (Pack8, ExtSplat) }
+
+let v128_load16_splat align offset =
+  VecLoad { ty = V128Type; align; offset; pack = Some (Pack16, ExtSplat) }
+
+let v128_load32_splat align offset =
+  VecLoad { ty = V128Type; align; offset; pack = Some (Pack32, ExtSplat) }
+
+let v128_load64_splat align offset =
+  VecLoad { ty = V128Type; align; offset; pack = Some (Pack64, ExtSplat) }
+
+let v128_load32_zero align offset =
+  VecLoad { ty = V128Type; align; offset; pack = Some (Pack32, ExtZero) }
+
+let v128_load64_zero align offset =
+  VecLoad { ty = V128Type; align; offset; pack = Some (Pack64, ExtZero) }
+
+let v128_store align offset =
+  VecStore { ty = V128Type; align; offset; pack = () }
 
 let v128_load8_lane align offset i =
-  VecLoadLane ({ty = V128Type; align; offset; pack = Pack8}, i)
+  VecLoadLane ({ ty = V128Type; align; offset; pack = Pack8 }, i)
+
 let v128_load16_lane align offset i =
-  VecLoadLane ({ty = V128Type; align; offset; pack = Pack16}, i)
+  VecLoadLane ({ ty = V128Type; align; offset; pack = Pack16 }, i)
+
 let v128_load32_lane align offset i =
-  VecLoadLane ({ty = V128Type; align; offset; pack = Pack32}, i)
+  VecLoadLane ({ ty = V128Type; align; offset; pack = Pack32 }, i)
+
 let v128_load64_lane align offset i =
-  VecLoadLane ({ty = V128Type; align; offset; pack = Pack64}, i)
+  VecLoadLane ({ ty = V128Type; align; offset; pack = Pack64 }, i)
 
 let v128_store8_lane align offset i =
-  VecStoreLane ({ty = V128Type; align; offset; pack = Pack8}, i)
+  VecStoreLane ({ ty = V128Type; align; offset; pack = Pack8 }, i)
+
 let v128_store16_lane align offset i =
-  VecStoreLane ({ty = V128Type; align; offset; pack = Pack16}, i)
+  VecStoreLane ({ ty = V128Type; align; offset; pack = Pack16 }, i)
+
 let v128_store32_lane align offset i =
-  VecStoreLane ({ty = V128Type; align; offset; pack = Pack32}, i)
+  VecStoreLane ({ ty = V128Type; align; offset; pack = Pack32 }, i)
+
 let v128_store64_lane align offset i =
-  VecStoreLane ({ty = V128Type; align; offset; pack = Pack64}, i)
+  VecStoreLane ({ ty = V128Type; align; offset; pack = Pack64 }, i)
 
 let v128_not = VecUnaryBits (V128 V128Op.Not)
 let v128_and = VecBinaryBits (V128 V128Op.And)
@@ -287,10 +345,8 @@ let v128_or = VecBinaryBits (V128 V128Op.Or)
 let v128_xor = VecBinaryBits (V128 V128Op.Xor)
 let v128_bitselect = VecTernaryBits (V128 V128Op.Bitselect)
 let v128_any_true = VecTestBits (V128 V128Op.AnyTrue)
-
 let i8x16_swizzle = VecBinary (V128 (I8x16 V128Op.Swizzle))
 let i8x16_shuffle is = VecBinary (V128 (I8x16 (V128Op.Shuffle is)))
-
 let i8x16_splat = VecSplat (V128 (I8x16 V128Op.Splat))
 let i8x16_extract_lane_s i = VecExtract (V128 (I8x16 (V128Op.Extract (i, SX))))
 let i8x16_extract_lane_u i = VecExtract (V128 (I8x16 (V128Op.Extract (i, ZX))))
@@ -330,7 +386,6 @@ let i8x16_min_u = VecBinary (V128 (I8x16 V128Op.MinU))
 let i8x16_max_s = VecBinary (V128 (I8x16 V128Op.MaxS))
 let i8x16_max_u = VecBinary (V128 (I8x16 V128Op.MaxU))
 let i8x16_avgr_u = VecBinary (V128 (I8x16 V128Op.AvgrU))
-
 let i16x8_splat = VecSplat (V128 (I16x8 V128Op.Splat))
 let i16x8_extract_lane_s i = VecExtract (V128 (I16x8 (V128Op.Extract (i, SX))))
 let i16x8_extract_lane_u i = VecExtract (V128 (I16x8 (V128Op.Extract (i, ZX))))
@@ -371,8 +426,12 @@ let i16x8_extmul_high_i8x16_s = VecBinary (V128 (I16x8 V128Op.ExtMulHighS))
 let i16x8_extmul_low_i8x16_u = VecBinary (V128 (I16x8 V128Op.ExtMulLowU))
 let i16x8_extmul_high_i8x16_u = VecBinary (V128 (I16x8 V128Op.ExtMulHighU))
 let i16x8_q15mulr_sat_s = VecBinary (V128 (I16x8 V128Op.Q15MulRSatS))
-let i16x8_extadd_pairwise_i8x16_s = VecConvert (V128 (I16x8 V128Op.ExtAddPairwiseS))
-let i16x8_extadd_pairwise_i8x16_u = VecConvert (V128 (I16x8 V128Op.ExtAddPairwiseU))
+
+let i16x8_extadd_pairwise_i8x16_s =
+  VecConvert (V128 (I16x8 V128Op.ExtAddPairwiseS))
+
+let i16x8_extadd_pairwise_i8x16_u =
+  VecConvert (V128 (I16x8 V128Op.ExtAddPairwiseU))
 
 let i32x4_splat = VecSplat (V128 (I32x4 V128Op.Splat))
 let i32x4_extract_lane i = VecExtract (V128 (I32x4 (V128Op.Extract (i, ()))))
@@ -408,14 +467,23 @@ let i32x4_mul = VecBinary (V128 (I32x4 V128Op.Mul))
 let i32x4_dot_i16x8_s = VecBinary (V128 (I32x4 V128Op.DotS))
 let i32x4_trunc_sat_f32x4_s = VecConvert (V128 (I32x4 V128Op.TruncSatSF32x4))
 let i32x4_trunc_sat_f32x4_u = VecConvert (V128 (I32x4 V128Op.TruncSatUF32x4))
-let i32x4_trunc_sat_f64x2_s_zero = VecConvert (V128 (I32x4 V128Op.TruncSatSZeroF64x2))
-let i32x4_trunc_sat_f64x2_u_zero = VecConvert (V128 (I32x4 V128Op.TruncSatUZeroF64x2))
+
+let i32x4_trunc_sat_f64x2_s_zero =
+  VecConvert (V128 (I32x4 V128Op.TruncSatSZeroF64x2))
+
+let i32x4_trunc_sat_f64x2_u_zero =
+  VecConvert (V128 (I32x4 V128Op.TruncSatUZeroF64x2))
+
 let i32x4_extmul_low_i16x8_s = VecBinary (V128 (I32x4 V128Op.ExtMulLowS))
 let i32x4_extmul_high_i16x8_s = VecBinary (V128 (I32x4 V128Op.ExtMulHighS))
 let i32x4_extmul_low_i16x8_u = VecBinary (V128 (I32x4 V128Op.ExtMulLowU))
 let i32x4_extmul_high_i16x8_u = VecBinary (V128 (I32x4 V128Op.ExtMulHighU))
-let i32x4_extadd_pairwise_i16x8_s = VecConvert (V128 (I32x4 V128Op.ExtAddPairwiseS))
-let i32x4_extadd_pairwise_i16x8_u = VecConvert (V128 (I32x4 V128Op.ExtAddPairwiseU))
+
+let i32x4_extadd_pairwise_i16x8_s =
+  VecConvert (V128 (I32x4 V128Op.ExtAddPairwiseS))
+
+let i32x4_extadd_pairwise_i16x8_u =
+  VecConvert (V128 (I32x4 V128Op.ExtAddPairwiseU))
 
 let i64x2_splat = VecSplat (V128 (I64x2 V128Op.Splat))
 let i64x2_extract_lane i = VecExtract (V128 (I64x2 (V128Op.Extract (i, ()))))
@@ -444,7 +512,6 @@ let i64x2_extmul_low_i32x4_s = VecBinary (V128 (I64x2 V128Op.ExtMulLowS))
 let i64x2_extmul_high_i32x4_s = VecBinary (V128 (I64x2 V128Op.ExtMulHighS))
 let i64x2_extmul_low_i32x4_u = VecBinary (V128 (I64x2 V128Op.ExtMulLowU))
 let i64x2_extmul_high_i32x4_u = VecBinary (V128 (I64x2 V128Op.ExtMulHighU))
-
 let f32x4_splat = VecSplat (V128 (F32x4 V128Op.Splat))
 let f32x4_extract_lane i = VecExtract (V128 (F32x4 (V128Op.Extract (i, ()))))
 let f32x4_replace_lane i = VecReplace (V128 (F32x4 (V128Op.Replace i)))
@@ -472,7 +539,6 @@ let f32x4_pmax = VecBinary (V128 (F32x4 V128Op.Pmax))
 let f32x4_demote_f64x2_zero = VecConvert (V128 (F32x4 V128Op.DemoteZeroF64x2))
 let f32x4_convert_i32x4_s = VecConvert (V128 (F32x4 V128Op.ConvertSI32x4))
 let f32x4_convert_i32x4_u = VecConvert (V128 (F32x4 V128Op.ConvertUI32x4))
-
 let f64x2_splat = VecSplat (V128 (F64x2 V128Op.Splat))
 let f64x2_extract_lane i = VecExtract (V128 (F64x2 (V128Op.Extract (i, ()))))
 let f64x2_replace_lane i = VecReplace (V128 (F64x2 (V128Op.Replace i)))

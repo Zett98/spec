@@ -1,7 +1,6 @@
 open Types
 
-type module_inst =
-{
+type module_inst = {
   types : func_type list;
   funcs : func_inst list;
   tables : table_inst list;
@@ -26,36 +25,41 @@ and extern =
   | ExternMemory of memory_inst
   | ExternGlobal of global_inst
 
-
 (* Reference types *)
 
 type Values.ref_ += FuncRef of func_inst
 
 let () =
   let type_of_ref' = !Values.type_of_ref' in
-  Values.type_of_ref' := function
-    | FuncRef _ -> FuncRefType
-    | r -> type_of_ref' r
+  Values.type_of_ref' :=
+    function FuncRef _ -> FuncRefType | r -> type_of_ref' r
 
 let () =
   let string_of_ref' = !Values.string_of_ref' in
-  Values.string_of_ref' := function
-    | FuncRef _ -> "func"
-    | r -> string_of_ref' r
+  Values.string_of_ref' :=
+    function FuncRef _ -> "func" | r -> string_of_ref' r
 
 let () =
   let eq_ref' = !Values.eq_ref' in
-  Values.eq_ref' := fun r1 r2 ->
-    match r1, r2 with
-    | FuncRef f1, FuncRef f2 -> f1 == f2
-    | _, _ -> eq_ref' r1 r2
-
+  Values.eq_ref' :=
+    fun r1 r2 ->
+      match (r1, r2) with
+      | FuncRef f1, FuncRef f2 -> f1 == f2
+      | _, _ -> eq_ref' r1 r2
 
 (* Auxiliary functions *)
 
 let empty_module_inst =
-  { types = []; funcs = []; tables = []; memories = []; globals = [];
-    exports = []; elems = []; datas = [] }
+  {
+    types = [];
+    funcs = [];
+    tables = [];
+    memories = [];
+    globals = [];
+    exports = [];
+    elems = [];
+    datas = [];
+  }
 
 let extern_type_of = function
   | ExternFunc func -> ExternFuncType (Func.type_of func)

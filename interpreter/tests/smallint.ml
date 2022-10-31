@@ -10,15 +10,14 @@ let s16max = 32767l
 let s16min = -32768l
 let u16max = u32max
 let u16min = 0l
-
 let s8max = 127l
 let s8min = -128l
 let u8max = u32max
 let u8min = 0l
 
 let assert_equal x y =
-  if x <> y then raise (Failure
-  (Printf.sprintf "Expected: %ld, but got %ld." x y))
+  if x <> y then
+    raise (Failure (Printf.sprintf "Expected: %ld, but got %ld." x y))
 
 let () =
   (* test addition wrap around *)
@@ -66,43 +65,43 @@ let () =
   with Ixx.Overflow ->
     ();
 
-  (* test shifts overflow *)
-  assert_equal s16min (I16.shl 16384l 1l);
-  assert_equal s8min (I8.shl 64l 1l);
-  assert_equal 0x7fffl (I16.shr_u u16max 1l);
-  assert_equal 0x7fl (I8.shr_u u8max 1l);
-  (* check that the top bits are not messed with *)
-  assert_equal u16max (I16.shr_u u16max 0l);
-  assert_equal u8max (I8.shr_u u8max 0l);
+    (* test shifts overflow *)
+    assert_equal s16min (I16.shl 16384l 1l);
+    assert_equal s8min (I8.shl 64l 1l);
+    assert_equal 0x7fffl (I16.shr_u u16max 1l);
+    assert_equal 0x7fl (I8.shr_u u8max 1l);
+    (* check that the top bits are not messed with *)
+    assert_equal u16max (I16.shr_u u16max 0l);
+    assert_equal u8max (I8.shr_u u8max 0l);
 
-  (* check rotation *)
-  assert_equal 1l (I16.rotl s16min 1l);
-  assert_equal 1l (I8.rotl s8min 1l);
-  assert_equal s16min (I16.rotl 0x4000l 1l);
-  assert_equal s8min (I8.rotl 0x40l 1l);
+    (* check rotation *)
+    assert_equal 1l (I16.rotl s16min 1l);
+    assert_equal 1l (I8.rotl s8min 1l);
+    assert_equal s16min (I16.rotl 0x4000l 1l);
+    assert_equal s8min (I8.rotl 0x40l 1l);
 
-  assert_equal s32min (I32.rotr 1l 1l);
-  assert_equal s16min (I16.rotr 1l 1l);
-  assert_equal s8min (I8.rotr 1l 1l);
+    assert_equal s32min (I32.rotr 1l 1l);
+    assert_equal s16min (I16.rotr 1l 1l);
+    assert_equal s8min (I8.rotr 1l 1l);
 
-  assert_equal 1l (I32.rotr s32min 31l);
-  assert_equal 1l (I16.rotr s16min 15l);
-  assert_equal 1l (I8.rotr s8min 7l);
-  assert_equal 0x40000000l (I32.rotr s32min 1l);
-  assert_equal 0x4000l (I16.rotr s16min 1l);
-  assert_equal 0x40l (I8.rotr s8min 1l);
+    assert_equal 1l (I32.rotr s32min 31l);
+    assert_equal 1l (I16.rotr s16min 15l);
+    assert_equal 1l (I8.rotr s8min 7l);
+    assert_equal 0x40000000l (I32.rotr s32min 1l);
+    assert_equal 0x4000l (I16.rotr s16min 1l);
+    assert_equal 0x40l (I8.rotr s8min 1l);
 
-  (* check clz *)
-  assert_equal 0l (I16.clz s16min);
-  assert_equal 0l (I8.clz s8min);
-  assert_equal 1l (I16.clz s16max);
-  assert_equal 1l (I8.clz s8max);
+    (* check clz *)
+    assert_equal 0l (I16.clz s16min);
+    assert_equal 0l (I8.clz s8min);
+    assert_equal 1l (I16.clz s16max);
+    assert_equal 1l (I8.clz s8max);
 
-  (* check popcnt *)
-  assert_equal 1l (I32.popcnt s32min);
-  assert_equal 1l (I16.popcnt s16min);
-  assert_equal 1l (I8.popcnt s8min);
-  assert_equal 16l (I16.popcnt (-1l));
-  assert_equal 8l (I8.popcnt (-1l));
-  assert_equal 15l (I16.popcnt s16max);
-  assert_equal 7l (I8.popcnt s8max);
+    (* check popcnt *)
+    assert_equal 1l (I32.popcnt s32min);
+    assert_equal 1l (I16.popcnt s16min);
+    assert_equal 1l (I8.popcnt s8min);
+    assert_equal 16l (I16.popcnt (-1l));
+    assert_equal 8l (I8.popcnt (-1l));
+    assert_equal 15l (I16.popcnt s16max);
+    assert_equal 7l (I8.popcnt s8max)
